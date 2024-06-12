@@ -8,7 +8,7 @@ long long n,k;
 void sekta(){
     //wyczysc pprzedni wektor
     arr.clear();
-    //utworzenie nowego wektoru
+    //utworzenie nowego wektora
     for(long long i=0;i<n;i++){
         arr.push_back(i+1);
     }
