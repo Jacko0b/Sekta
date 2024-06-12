@@ -2,67 +2,67 @@
 #include <vector>
 using namespace std;
 
-vector<long long> arr;
-vector<long long> :: iterator it;
-long long n,k;
-void sekta(){
-    //wyczysc pprzedni wektor
-    arr.clear();
-    //utworzenie nowego wektora
-    for(long long i=0;i<n;i++){
-        arr.push_back(i+1);
+vector<long long> circle;
+unsigned long long n;
+long long k;
+
+void sect(){
+    //Wyczyszczenie poprzedniego wektora
+    circle.clear();
+
+    //Utworzenie aktualnego kręgu
+    for(unsigned long long i=0; i<n; i++){
+        circle.push_back(i+1);
     }
     
-    //poczatekowa osoba
-    it = arr.begin()+1;
-    int i =0;
-    long long recentlyKilled = -1;
-    if(k<=n/2){
-        recentlyKilled=k*2;
+    //Osoba sprawdzana
+    int index = 1;
+
+    //Licznik co 2 osoby
+    int i = 0;
+    
+    //Pozycja zabitego
+    unsigned long long killedPos = -1;
+
+    //Jeżeli osoba do odstrzału jest w pierwszym okrążeniu to mamy jej miejsce od razu
+    if(k <= n/2){
+        killedPos = k*2;
     }
     else{
+        //Szukamy osoby do odstarzłu
         while(k>0){        
-            //jezeli zrobilismy przeskok o 2 miejsca to zabijamy dana osobe i zapisujemy ostatnio zabita jak o 1 to skaczemy dalej
+            //Jezeli zrobilismy przeskok o 2 miejsca to zabijamy dana osobe i zapisujemy ostatnio zabita, jak o 1 to skaczemy dalej
             if(i%2==0){
                 k--;
-                recentlyKilled = *it;
-                it = arr.erase(it);
+                killedPos = circle[index];
+                circle.erase(circle.begin() + index);
             }else{
-                ++it;
+                index++;
             }
             i++; 
 
             //sprawdzamy czy zaczynamy nowe kolko 
-            if ( it == arr.end()){
-                it = arr.begin();
+            if ( index >= circle.size()){
+                index=0;
             }       
         }
     }
-    //wypisz osobe zabita na miejscu k
-    printf("%lld \n",recentlyKilled);
+    //Wypisz osobe zabita na miejscu k
+    printf("%lld \n",killedPos);
 }
-long long minPow2(){
-    long long pow=1;
-    while(pow<k){
-        pow*=2;
-    }
-    return pow;
-}
+// long long minPow2(){
+//     long long pow=1;
+//     while(pow<k){
+//         pow*=2;
+//     }
+//     return pow;
+// }
 void sortK(){
     if (k<0){ 
         k=k+1+n;
     } 
 }
-// void sekta(){
-//     long long t;
-//     if (k>0){ 
-//         t=k;
-//     } 
-//     else{
-//         t=k+1+n;
-//     } 
-//     long long p = minPow2();
-// }
+
 int msbIndex(unsigned long long n){
     int msb = 0;
     while (n != 0) {
@@ -71,7 +71,7 @@ int msbIndex(unsigned long long n){
     }
     return msb - 1;
 }
-void sektaBit(unsigned long long n){
+void sectBit(unsigned long long n){
     //przesuniecie bitowe w lewo
     n = n<<1;
     //zamiana msb na 0 i lsb na 1 = otrzymujemy nasze bezpieczne miejsce 
@@ -83,11 +83,13 @@ void sektaBit(unsigned long long n){
 int main(){
     long long m;
     scanf("%lld",&m);
+    //Sprawdzenie czy podano odpowiednią ilość wierszy
     if(m<=0){
         printf("liczba wprowadzonych wierszy nie jest dodatnia, m=%lld",m);
         return 0;
     }
-        
+
+    //Wywołanie sekty dla każdego wiersza    
     for(long long i=0;i<m;i++){
         
         scanf("%lld %lld",&n,&k);
@@ -97,12 +99,11 @@ int main(){
         if(k>n || n<=0){
             printf("zle wprowadzone argumenty dla sekty\n");   
         }else if(n==k){
-            sektaBit((unsigned long long)n);
+            sectBit((unsigned long long)n);
         }
         else{
-            sekta();
-        }
-        
+            sect();
+        }     
     }
     return 0;
 }
