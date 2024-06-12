@@ -3,7 +3,7 @@
 using namespace std;
 
 vector<long long> circle;
-unsigned long long n;
+long long n;
 long long k;
 
 void sect(){
@@ -11,73 +11,63 @@ void sect(){
     circle.clear();
 
     //Utworzenie aktualnego kręgu
-    for(unsigned long long i=0; i<n; i++){
+    for(long long i=0; i<n; i++){
         circle.push_back(i+1);
     }
     
     //Osoba sprawdzana
-    int index = 1;
+    long long index = 1;
 
     //Licznik co 2 osoby
     int i = 0;
     
     //Pozycja zabitego
-    unsigned long long killedPos = -1;
+    long long killedPos = 0;
 
-    //Jeżeli osoba do odstrzału jest w pierwszym okrążeniu to mamy jej miejsce od razu
-    if(k <= n/2){
-        killedPos = k*2;
-    }
-    else{
-        //Szukamy osoby do odstarzłu
-        while(k>0){        
-            //Jezeli zrobilismy przeskok o 2 miejsca to zabijamy dana osobe i zapisujemy ostatnio zabita, jak o 1 to skaczemy dalej
-            if(i%2==0){
-                k--;
-                killedPos = circle[index];
-                circle.erase(circle.begin() + index);
-            }else{
-                index++;
-            }
-            i++; 
-
-            //sprawdzamy czy zaczynamy nowe kolko 
-            if ( index >= circle.size()){
-                index=0;
-            }       
+    //Szukamy osoby do odstarzłu
+    while(k>0){        
+        //Jezeli zrobilismy przeskok o 2 miejsca to zabijamy dana osobe i zapisujemy ostatnio zabita, jak o 1 to skaczemy dalej
+        if(i%2==0){
+            k--;
+            killedPos = circle[index];
+            circle.erase(circle.begin() + index);
+        }else{
+            index++;
         }
+        i++; 
+
+        //sprawdzamy czy zaczynamy nowe kolko 
+        if ( index >= circle.size()){
+            index=0;
+        }       
     }
-    //Wypisz osobe zabita na miejscu k
+    //Wypisz osobe zabita 
     printf("%lld \n",killedPos);
 }
-// long long minPow2(){
-//     long long pow=1;
-//     while(pow<k){
-//         pow*=2;
-//     }
-//     return pow;
-// }
+void sect1stRound(){
+    //Jeżeli osoba do odstrzału jest w pierwszym okrążeniu to mamy jej miejsce od razu
+    printf("%lld \n",k*2);
+}
 void sortK(){
     if (k<0){ 
         k=k+1+n;
     } 
 }
-
-int msbIndex(unsigned long long n){
+int msbIndex(unsigned long long number){
     int msb = 0;
-    while (n != 0) {
-        n >>= 1;
+    while (number != 0) {
+        number >>= 1;
         msb++;
     }
     return msb - 1;
 }
-void sectBit(unsigned long long n){
+void sectBit(unsigned long long number){
     //przesuniecie bitowe w lewo
-    n = n<<1;
+    number = number<<1;
     //zamiana msb na 0 i lsb na 1 = otrzymujemy nasze bezpieczne miejsce 
-    n = n^(1ULL<<msbIndex(n));
-    n = n^(1ULL<<0);
-    printf("%llu\n",n);
+    number = number^(1ULL<<msbIndex(number));
+    number = number^(1ULL<<0);
+    printf("%lld\n",number);
 }
 
 int main(){
@@ -98,8 +88,12 @@ int main(){
 
         if(k>n || n<=0){
             printf("zle wprowadzone argumenty dla sekty\n");   
-        }else if(n==k){
-            sectBit((unsigned long long)n);
+        }
+        else if(n==k){
+            sectBit(n);
+        }
+        else if(k<=n/2){
+            sect1stRound();
         }
         else{
             sect();
