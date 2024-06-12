@@ -53,8 +53,8 @@ void sortK(){
         k=k+1+n;
     } 
 }
-int msbIndex(unsigned long long number){
-    int msb = 0;
+unsigned long long msbIndex(unsigned long long number){
+    unsigned long long msb = 0;
     while (number != 0) {
         number >>= 1;
         msb++;
@@ -67,7 +67,7 @@ void sectBit(unsigned long long number){
     //zamiana msb na 0 i lsb na 1 = otrzymujemy nasze bezpieczne miejsce 
     number = number^(1ULL<<msbIndex(number));
     number = number^(1ULL<<0);
-    printf("%lld\n",number);
+    printf("%llu\n",number);
 }
 
 int main(){
